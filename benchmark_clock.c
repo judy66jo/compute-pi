@@ -9,7 +9,6 @@
 int main(int argc, char const *argv[])
 {
     clock_t start=0, end=0;
-	double cpu_time_used=0;
 
     if (argc < 2) return -1;
 
@@ -22,56 +21,47 @@ int main(int argc, char const *argv[])
         compute_pi_baseline(N);
     }
 	end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%lf,", cpu_time_used);
+    printf("%lf,", ((double) (end - start)) / CLOCKS_PER_SEC);
 
 
     // OpenMP with 2 threads
 	start=0, end=0;
-	cpu_time_used=0;
     start = clock();
     for(i = 0; i < loop; i++) {
         compute_pi_openmp(N, 2);
     }
 	end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%lf,", cpu_time_used);
+    printf("%lf,", ((double) (end - start)) / CLOCKS_PER_SEC);
 
 
     // OpenMP with 4 threads
     start=0, end=0;
-	cpu_time_used=0;
     start = clock();
     for(i = 0; i < loop; i++) {
         compute_pi_openmp(N, 4);
     }
     end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%lf,", cpu_time_used);
+    printf("%lf,", ((double) (end - start)) / CLOCKS_PER_SEC);
 
 
     // AVX SIMD
     start=0, end=0;
-	cpu_time_used=0;
     start = clock();
     for(i = 0; i < loop; i++) {
         compute_pi_avx(N);
     }
     end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%lf,", cpu_time_used);
+    printf("%lf,", ((double) (end - start)) / CLOCKS_PER_SEC);
 
 
     // AVX SIMD + Loop unrolling
     start=0, end=0;
-	cpu_time_used=0;
     start = clock();
     for(i = 0; i < loop; i++) {
         compute_pi_avx_unroll(N);
     }
     end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("%lf\n,", cpu_time_used);
+    printf("%lf\n", ((double) (end - start)) / CLOCKS_PER_SEC);
 
     return 0;
 }
