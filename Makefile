@@ -3,7 +3,7 @@ CFLAGS = -O0 -std=gnu99 -Wall -fopenmp -mavx
 EXECUTABLE = \
 	time_test_baseline time_test_openmp_2 time_test_openmp_4 \
 	time_test_avx time_test_avxunroll \
-	benchmark_clock_gettime
+	benchmark_clock_gettime benchmark_clock
 
 default: computepi.o
 	$(CC) $(CFLAGS) computepi.o time_test.c -DBASELINE -o time_test_baseline
@@ -12,6 +12,7 @@ default: computepi.o
 	$(CC) $(CFLAGS) computepi.o time_test.c -DAVX -o time_test_avx
 	$(CC) $(CFLAGS) computepi.o time_test.c -DAVXUNROLL -o time_test_avxunroll
 	$(CC) $(CFLAGS) computepi.o benchmark_clock_gettime.c -o benchmark_clock_gettime
+	$(CC) $(CFLAGS) computepi.o benchmark_clock.c -o benchmark_clock
 
 .PHONY: clean default
 
@@ -26,10 +27,19 @@ check: default
 	time ./time_test_avxunroll
 
 gencsv: default
-	for i in `seq 100 5000 25000`; do \
+	for i in `seq 100 100 50000`; do \
 		printf "%d," $$i;\
 		./benchmark_clock_gettime $$i; \
-	done > result_clock_gettime.csv	
+	done > result_clock_gettime.csv
+	for i in `seq 100 100 50000`; do \
+		printf "%d," $$i;\
+		./benchmark_clock $$i; \
+	done > result_clock.csv
+
+plot: gencsv
+	gnuplot plot_clock_gettime.gp
+	gnuplot plot_clock.gp
 
 clean:
 	rm -f $(EXECUTABLE) *.o *.s result_clock_gettime.csv
+	rm -f $(EXECUTABLE) *.o *.s result_clock.csv
