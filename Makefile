@@ -41,5 +41,4 @@ plot: gencsv
 	gnuplot plot_clock.gp
 
 clean:
-	rm -f $(EXECUTABLE) *.o *.s result_clock_gettime.csv
-	rm -f $(EXECUTABLE) *.o *.s result_clock.csv
+	rm -f $(EXECUTABLE) *.o *.s result_clock_gettime.csv result_clock.csv clock_gettime.png clock.png
